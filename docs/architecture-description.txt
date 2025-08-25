@@ -1,0 +1,129 @@
+AWS FRAUD DETECTION CODETHON ARCHITECTURE
+
+===============================================================================
+OVERVIEW
+===============================================================================
+A comprehensive, serverless fraud detection system built on AWS that processes 
+transaction data, detects anomalies using machine learning, and provides an 
+intelligent AI assistant for fraud investigation.
+
+===============================================================================
+ARCHITECTURE FLOW
+===============================================================================
+Raw Data (S3) → Glue ETL → SageMaker RCF → Anomaly Scores → Lambda → DynamoDB → AI Assistant
+
+===============================================================================
+CORE COMPONENTS
+===============================================================================
+
+1. DATA PIPELINE
+   - S3 Bucket: Stores raw transaction data, cleaned datasets, and ML model artifacts
+   - AWS Glue: ETL job cleans and transforms transaction data from CSV to Parquet format
+   - Data Flow: input/ → cleaned/ → rcf-input/ → scored/ → models/
+
+2. MACHINE LEARNING
+   - SageMaker Random Cut Forest: Unsupervised anomaly detection algorithm
+   - Training: Processes 4 features (amount, hour, country, category)
+   - Batch Transform: Scores all transactions for anomaly detection
+   - Model Storage: Trained models saved to S3 for reuse
+
+3. ALERT PROCESSING
+   - Lambda Function: Processes anomaly scores and filters transactions with score > 2.5
+   - DynamoDB: Stores fraud alerts with transaction details and risk scores
+   - Real-time Processing: Automated alert generation and storage
+
+4. AI ASSISTANT (FRAUDINVESTIGATOR)
+   - Lambda Backend: Natural language processing for fraud queries
+   - API Gateway: RESTful API for web interface access
+   - Web Interface: Beautiful, responsive chat-style UI for investigators
+   - Capabilities: Query fraud patterns, explain transactions, generate reports
+
+5. INFRASTRUCTURE AS CODE
+   - Terraform: Complete infrastructure provisioning and management
+   - IAM Roles: Secure, least-privilege access controls
+   - Monitoring: CloudWatch logs and metrics for all services
+
+===============================================================================
+KEY FEATURES
+===============================================================================
+- Serverless Architecture: Auto-scaling, pay-per-use model
+- Real-time Detection: Sub-minute fraud alert generation
+- Natural Language Interface: Ask questions in plain English
+- Comprehensive Security: Encryption, IAM roles, VPC isolation
+- Production Ready: Complete monitoring, logging, and error handling
+
+===============================================================================
+SAMPLE DATA FLOW
+===============================================================================
+1. 200 sample transactions uploaded to S3
+2. Glue job cleans and processes data
+3. SageMaker trains RCF model and scores transactions
+4. Lambda filters high-risk transactions (5 alerts generated)
+5. DynamoDB stores fraud alerts with risk scores 2.8-5.7
+6. AI assistant provides intelligent analysis and recommendations
+
+===============================================================================
+TECHNICAL SPECIFICATIONS
+===============================================================================
+
+AWS Services Used:
+- S3: Data lake storage
+- Glue: ETL processing
+- SageMaker: Machine learning
+- Lambda: Serverless compute
+- DynamoDB: NoSQL database
+- API Gateway: REST API
+- IAM: Security and access control
+- CloudWatch: Monitoring and logging
+
+Programming Languages:
+- Python: Backend logic and ML
+- HTML/CSS/JavaScript: Web interface
+- HCL: Terraform infrastructure
+
+Data Processing:
+- Input: CSV transaction files
+- Processing: Parquet format for analytics
+- ML Features: Amount, time, geography, category
+- Output: Anomaly scores and fraud alerts
+
+Security:
+- Encryption at rest and in transit
+- IAM roles with least privilege
+- VPC isolation capabilities
+- CORS configuration for web access
+
+===============================================================================
+DEPLOYMENT ARCHITECTURE
+===============================================================================
+
+Local Development:
+- Code repository with Git version control
+- Terraform for infrastructure as code
+- Python scripts for deployment automation
+- Web interfaces for testing
+
+AWS Cloud:
+- Multi-service serverless architecture
+- Auto-scaling based on demand
+- Pay-per-use pricing model
+- High availability and fault tolerance
+
+Monitoring:
+- CloudWatch logs for all services
+- Real-time metrics and dashboards
+- Error tracking and alerting
+- Performance optimization
+
+===============================================================================
+BUSINESS VALUE
+===============================================================================
+This architecture demonstrates enterprise-grade fraud detection using modern 
+AWS services with intelligent automation and user-friendly interfaces. It 
+provides real-time fraud detection, reduces false positives, and enables 
+investigators to quickly analyze suspicious activities through natural 
+language queries.
+
+The system is designed for scalability, security, and cost-effectiveness, 
+making it suitable for production deployment in financial institutions and 
+e-commerce platforms.
